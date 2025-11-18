@@ -1,6 +1,5 @@
 import sequelize from "../db/Db.js";
 import { DataTypes } from "sequelize";
-import User from "../models/User.js";
 
 
 const Wallet_transaction = sequelize.define('wallet_transaction', {

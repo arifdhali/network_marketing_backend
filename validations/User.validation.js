@@ -17,10 +17,10 @@ export const RegisterUserSchema = Joi.object({
         "any.required": "Mobile is required",
 
     }),
-    sponsor_id: Joi.number().integer().required().messages({
-        "number.base": "Sponsor ID must be a number",
-        "number.integer": "Sponsor ID must be a number",
-        "any.required": "Sponsor ID is required",
+    refer_id: Joi.number().integer().required().messages({
+        "number.base": "Refer ID must be a number",
+        "number.integer": "Refer ID must be a number",
+        "any.required": "Refer ID is required",
     }),
     password: Joi.string().min(6).max(50).required().messages({
         "string.base": "Password must be a string",

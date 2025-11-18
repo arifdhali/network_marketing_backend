@@ -10,7 +10,7 @@ class UserController {
 
             await RegisterUserSchema.validateAsync(req.body, { abortEarly: false });
 
-            const { name, email, mobile, sponsor_id, password } = req.body;
+            const { name, email, mobile, refer_id, password } = req.body;
 
             let username = this.makeUsername(name, mobile);
             // crate username
@@ -22,7 +22,7 @@ class UserController {
                     name,
                     email,
                     mobile,
-                    sponsor_id
+                    refer_id
                 }
             })
 
@@ -62,6 +62,15 @@ class UserController {
                         }))
                     }
                 )
+            }
+            if (error.name === "SequelizeUniqueConstraintError") {
+                return res.status(409).json({
+                    status: false,
+                    errors: error.errors.map(err => ({
+                        field: err.path,
+                        message: `${err.path} must be unique`
+                    }))
+                });
             }
             return res.status(500)
                 .json(

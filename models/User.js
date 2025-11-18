@@ -40,7 +40,7 @@ const User = sequelize.define('users_model', {
         allowNull: false,
         unique: true
     },
-    sponsor_id: {
+    refer_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {

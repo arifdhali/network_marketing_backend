@@ -18,7 +18,7 @@ app.use(cors({
     origin: "*"
 }))
 
-await sequelize.sync({ alter: false })
+// await sequelize.sync({ alter: false,force:false });
 
 
 app.use("/api/v1/user", router_user);

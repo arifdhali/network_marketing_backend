@@ -1,13 +1,60 @@
 import USER_MODEL from "../models/User.js";
-import { RegisterUserSchema } from "../validations/User.validation.js";
+import jwt from "jsonwebtoken";
+import { RegisterUserSchema, LoginUserSchema } from "../validations/User.validation.js";
 class UserController {
 
+
+    async loginUser(req, res) {
+        try {
+            await LoginUserSchema.validateAsync(req.body, { abortEarly: false });
+
+            const { email, password } = req.body;
+            const userdata = await USER_MODEL.findOne({ where: { email, password: password } })
+
+            if (!userdata) {
+                return res.status(401).json({
+                    status: false,
+                    message: "Invalid email or password"
+                });
+            }
+            const user = {
+                id: userdata.id,
+                username: userdata.username,
+                email: userdata.email,
+            }
+            let token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+            return res.status(200).json({
+                status: true,
+                message: "Login successful",
+                token: token,
+            });
+
+
+        } catch (error) {
+            if (error.isJoi) {
+                return res.status(400).json(
+                    {
+                        status: false,
+                        errors: error.details.map(item => ({
+                            field: item.path[0],
+                            message: item.message
+                        }))
+                    }
+                )
+            }
+            return res.status(500)
+                .json(
+                    {
+                        status: false,
+                        message: error.message
+                    }
+                );
+        }
+    }
 
     async registerUser(req, res) {
 
         try {
-
-
             await RegisterUserSchema.validateAsync(req.body, { abortEarly: false });
 
             const { name, email, mobile, refer_id, password } = req.body;
@@ -28,8 +75,6 @@ class UserController {
 
             if (created) {
                 // sending email logic here
-
-
                 return res.status(201).json(
                     {
                         status: true,

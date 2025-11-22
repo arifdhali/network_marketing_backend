@@ -1,5 +1,21 @@
-import Joi from "joi"
-export const RegisterUserSchema = Joi.object({
+import Joi from "joi";
+
+const LoginUserSchema = Joi.object({
+    email: Joi.string().required().messages({
+        "string.base": "Login must be a string",
+        "any.required": "Login is required",
+    }),
+    password: Joi.string().required().messages({
+        "string.base": "Password must be a string",
+        "any.required": "Password is required",
+
+    })
+
+})
+
+
+
+const RegisterUserSchema = Joi.object({
     name: Joi.string().max(100).required().messages({
         "string.base": "Name must be a string",
         "string.max": "Name must be less than or equal to 100 characters",
@@ -30,3 +46,9 @@ export const RegisterUserSchema = Joi.object({
     })
 
 });
+
+
+export {
+    LoginUserSchema,
+    RegisterUserSchema
+};

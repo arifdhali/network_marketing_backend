@@ -1,7 +1,7 @@
 import express from "express";
 import KycUser from "../controller/Kyc.controller.js";
 import { verifyToken } from "../middleware/VerifyAuth.js";
-import  createKYCUploadHandle  from "../middleware/KycUpload.js";
+import createKYCUploadHandle from "../middleware/KycUpload.js";
 
 
 const kycRouter = express.Router();

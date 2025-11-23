@@ -1,7 +1,6 @@
 "use strict";
 
-const crypto = require("crypto"); // CJS import
-const { create } = require("domain");
+const crypto = require("crypto"); 
 
 module.exports = {
   async up(queryInterface, Sequelize) {

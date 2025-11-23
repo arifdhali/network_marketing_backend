@@ -34,6 +34,7 @@ app.use("/api/v1/user", router_user);
 app.use("/api/v1/wallet", router_wallet);
 app.use("/api/v1/admin", router_admin);
 
+
 app.use((req, res) => {
     res.status(404).json({ message: "Route not found" });
 })

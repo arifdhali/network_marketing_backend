@@ -9,6 +9,11 @@ import "./models/Admin.js";
 import "./models/Plans.js";
 import "./models/associations.js";
 
+import multer from "multer";
+
+import path from "path"
+import { fileURLToPath } from "url";
+
 const PORT = 3001;
 
 
@@ -18,6 +23,10 @@ app.use(cors({
     origin: "*"
 }))
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, "uploads")));
 // await sequelize.sync({ alter: false,force:false });
 
 
@@ -27,8 +36,20 @@ app.use("/api/v1/admin", router_admin);
 
 app.use((req, res) => {
     res.status(404).json({ message: "Route not found" });
-
 })
+
+// app.use((err, req, res, next) => {
+//     console.error(err.stack);
+//     if (err instanceof multer.MulterError) {
+//         if (err.code == "LIMIT_FILE_SIZE") {
+//             console.log(err.limit)
+//             return res.status(400).json({ message: "File size is too large. Max limit is 5MB" });
+//         }
+//         return res.status(400).json({ error: err.message });
+//     }
+//     res.status(500).json({ message: "Internal Server Error" });
+//     next();
+// })
 
 app.listen(PORT, () => {
     console.log(`server runnin on http://localhost:${PORT}`)

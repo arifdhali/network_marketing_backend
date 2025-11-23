@@ -2,6 +2,8 @@ import { DataTypes } from "sequelize";
 import sequelize from "../db/Db.js";
 import crypto from "crypto";
 
+import dotenv from "dotenv";
+dotenv.config();
 
 const User = sequelize.define('users_model', {
 
@@ -19,7 +21,7 @@ const User = sequelize.define('users_model', {
 
         set(value) {
             this.setDataValue('password_hash', value);
-            const hashedPassword = crypto.createHash('sha256').update(value).digest('hex');
+            const hashedPassword = crypto.createHash(`${process.env.CRYPTO_HASH_ALGO}`).update(value).digest('hex');
             this.setDataValue('password', hashedPassword);
         }
     },

@@ -1,34 +1,30 @@
-import User from "./User.js"
 import Wallet_transaction from "../models/Wallet_transction.js"
+import KYC_Model from "./Kyc.js";
 import Plans from "./Plans.js"
+import User from "./User.js";
 
 // users table associations
-User.belongsTo(User, {
-    as: 'sponsor',
-    foreignKey: 'sponsor_id'
-})
+// User.belongsTo(User, {
+//     as: 'sponsor',
+//     foreignKey: 'sponsor_id'
+// })
 
-User.hasMany(User, {
-    foreignKey: 'sponsor_id',
-    as: "downlines"
-})
+// User.hasMany(User, {
+//     foreignKey: 'sponsor_id',
+//     as: "downlines"
+// })
 
-Wallet_transaction.hasMany(User, {
-    foreignKey: 'id',
-    as: 'wallet_transactions'
-})
-
-Wallet_transaction.belongsTo(User, {
+User.hasOne(KYC_Model, {
     foreignKey: 'user_id',
-    as: 'user'
+})
+KYC_Model.belongsTo(User, {
+    foreignKey: 'user_id'
 })
 
+User.belongsTo(Plans, {
+    foreignKey: 'plan_id',
+})
 
-Plans.belongsTo(User, {
-    foreignKey: "id",
-    as: "plan_users"
-});
-Plans.hasOne(User, {
-    foreignKey: "plan_id",
-    as: "user_plans"
+Plans.hasMany(User, {
+    foreignKey: 'plan_id',
 })

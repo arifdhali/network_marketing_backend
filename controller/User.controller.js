@@ -1,15 +1,19 @@
 import USER_MODEL from "../models/User.js";
 import jwt from "jsonwebtoken";
 import { RegisterUserSchema, LoginUserSchema } from "../validations/User.validation.js";
+import crypto from "crypto";
+import dotenv from "dotenv";
+dotenv.config();
+
 class UserController {
-
-
     async loginUser(req, res) {
         try {
             await LoginUserSchema.validateAsync(req.body, { abortEarly: false });
 
             const { email, password } = req.body;
-            const userdata = await USER_MODEL.findOne({ where: { email, password: password } })
+            const hashedPassword = crypto.createHash(`${process.env.CRYPTO_HASH_ALGO}`).update(password).digest("hex");
+
+            const userdata = await USER_MODEL.findOne({ where: { email, password: hashedPassword } })
 
             if (!userdata) {
                 return res.status(401).json({
@@ -55,6 +59,7 @@ class UserController {
     async registerUser(req, res) {
 
         try {
+            console.log(req.body)
             await RegisterUserSchema.validateAsync(req.body, { abortEarly: false });
 
             const { name, email, mobile, refer_id, password } = req.body;
@@ -124,17 +129,14 @@ class UserController {
                         message: error.message
                     }
                 );
-
         }
 
     }
     // create usernameF
     makeUsername(name, mobile) {
         const namePart = name.trim().toLowerCase().slice(0, name.length / 2).replace(/\s+/g, "") + mobile.slice(0, mobile.length / 2);
-
         return namePart
     }
-
 
 }
 

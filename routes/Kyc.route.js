@@ -15,6 +15,6 @@ const kycUpload_multer = createKYCUploadHandle({
     ]
 });
 
-kycRouter.post("/submit", verifyToken, kycUpload_multer, KycUser.submitKyc)
+kycRouter.post("/submit",  kycUpload_multer, KycUser.submitKyc)
 
 export default kycRouter;

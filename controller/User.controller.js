@@ -23,6 +23,7 @@ class UserController {
             }
             const user = {
                 id: userdata.id,
+                type:"user",
                 username: userdata.username,
                 email: userdata.email,
             }

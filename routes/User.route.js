@@ -2,6 +2,7 @@ import { Router } from "express";
 import UserController from "../controller/User.controller.js";
 import kycRouter from "./Kyc.route.js";
 import { verifyToken } from "../middleware/VerifyAuth.js";
+import AuthRoles from "../middleware/AuthRoles.js";
 const router = Router();
 
 
@@ -13,7 +14,7 @@ router.post("/register", (req, res) => {
 });
 
 // all kyc routes
-router.use("/kyc",verifyToken,  kycRouter);
+router.use("/kyc", verifyToken, AuthRoles("manager"), kycRouter);
 
 
 export default router;

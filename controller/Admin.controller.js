@@ -22,6 +22,7 @@ class AdminController {
                 });
             }
             const user = {
+                type:"admin",
                 id: admindata.id,
                 email: admindata.email,
                 role: admindata.role

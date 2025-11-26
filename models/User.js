@@ -61,10 +61,6 @@ const User = sequelize.define('users_model', {
         type: DataTypes.INTEGER,
         allowNull: true
     },
-    kyc_status: {
-        type: DataTypes.ENUM('pending', 'approved', 'rejected'),
-        defaultValue: "pending"
-    },
     status: {
         type: DataTypes.ENUM('active', 'inactive'),
         defaultValue: "active"

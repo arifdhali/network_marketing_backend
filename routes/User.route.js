@@ -14,7 +14,7 @@ router.post("/register", (req, res) => {
 });
 
 // all kyc routes
-router.use("/kyc", verifyToken, AuthRoles("manager"), kycRouter);
+router.use("/kyc", verifyToken, AuthRoles("user"), kycRouter);
 
 
 export default router;

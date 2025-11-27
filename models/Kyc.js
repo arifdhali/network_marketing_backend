@@ -40,7 +40,8 @@ const KYC_Model = sequelize.define("kyc_model", {
     },
     reason: {
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null,
     }
 },
     {

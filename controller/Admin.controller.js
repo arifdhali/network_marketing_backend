@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import { LoginAdminSchema } from "../validations/Admin.validation.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import KYC_Model from "../models/Kyc.js";
 
 class AdminController {
 
@@ -22,7 +23,7 @@ class AdminController {
                 });
             }
             const user = {
-                type:"admin",
+                type: "admin",
                 id: admindata.id,
                 email: admindata.email,
                 role: admindata.role
@@ -88,6 +89,7 @@ class AdminController {
         }
 
     }
+
 
 
 }

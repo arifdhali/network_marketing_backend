@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import { RegisterUserSchema, LoginUserSchema } from "../validations/User.validation.js";
 import crypto from "crypto";
 import dotenv from "dotenv";
+import User from "../models/User.js";
+import { Op } from "sequelize";
 dotenv.config();
 
 class UserController {
@@ -23,7 +25,7 @@ class UserController {
             }
             const user = {
                 id: userdata.id,
-                type:"user",
+                type: "user",
                 username: userdata.username,
                 email: userdata.email,
             }
@@ -137,6 +139,53 @@ class UserController {
     makeUsername(name, mobile) {
         const namePart = name.trim().toLowerCase().slice(0, name.length / 2).replace(/\s+/g, "") + mobile.slice(0, mobile.length / 2);
         return namePart
+    }
+
+
+    // get users
+
+    async getUsers(req, res) {
+        try {
+            const { name, email, mobile } = req.query;
+            let where = {};
+            if (name) {
+                where.name = { [Op.like]: `%${name}%` };
+            } else if (email) {
+                where.email = { [Op.like]: `%${email}%` };
+            } else if (mobile) {
+                where.mobile = { [Op.like]: `%${mobile}%` };
+            }
+            const { count, rows } = await User.findAndCountAll({
+                where: where,
+                attributes: ["id", "username", "email", "refer_id", "position", "plan_id", "status"],
+                raw: true
+            })
+
+
+            if (rows.length == 0) {
+                return res.status(200).json({
+                    status: true,
+                    users: 0,
+                    message: "No users found"
+                })
+            }
+            else if (rows.length >= 1) {
+                return res.status(200).json({
+                    status: true,
+                    users: rows,
+                    total_count: count
+                })
+            }
+
+        } catch (error) {
+            console.log(error)
+            return res.json({
+                status: false,
+                message: error.message
+            })
+
+        }
+
     }
 
 }

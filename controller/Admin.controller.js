@@ -3,7 +3,6 @@ import User from "../models/User.js";
 import { LoginAdminSchema } from "../validations/Admin.validation.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import KYC_Model from "../models/Kyc.js";
 
 class AdminController {
 
@@ -58,37 +57,6 @@ class AdminController {
         }
     }
 
-    // get users
-
-    async getUsers(req, res) {
-
-
-        try {
-
-
-
-            const { count, rows } = await User.findAndCountAll({
-                attributes: ["id", "username", "email", "refer_id", "position", "plan_id", "status"],
-                raw: true
-            })
-            if (rows.length >= 1) {
-                return res.status(200).json({
-                    status: true,
-                    users: rows,
-                    total_count: count
-                })
-            }
-
-        } catch (error) {
-
-            return res.json({
-                status: false,
-                message: error.message
-            })
-
-        }
-
-    }
 
 
 

@@ -98,7 +98,7 @@ class KycController {
                 });
             }
             let kyc = await KYC_Model.findOne({ where: { user_id: user_id } });
-            console.log(kyc)
+            
             if (!kyc) {
                 return res.status(404).json({
                     status: false,

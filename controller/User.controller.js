@@ -5,6 +5,8 @@ import crypto from "crypto";
 import dotenv from "dotenv";
 import User from "../models/User.js";
 import { Op } from "sequelize";
+import { sendMail } from "../utils/sendMail.js";
+import Register from "../mail/template/Register.js";
 dotenv.config();
 
 class UserController {
@@ -62,7 +64,6 @@ class UserController {
     async registerUser(req, res) {
 
         try {
-            console.log(req.body)
             await RegisterUserSchema.validateAsync(req.body, { abortEarly: false });
 
             const { name, email, mobile, refer_id, password } = req.body;
@@ -83,6 +84,17 @@ class UserController {
 
             if (created) {
                 // sending email logic here
+                const mailData = {
+                    to: email,
+                    subject: `Welcome message`,
+                    html: Register({
+                        url: "http://localhost/login",
+                        email,
+                    }),
+
+                }
+                let mailstatus = await sendMail(mailData);
+                console.log(mailstatus)
                 return res.status(201).json(
                     {
                         status: true,
